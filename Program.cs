@@ -13,7 +13,7 @@ foreach (var puzzleTypeInfo in puzzleTypes)
 
 
 //var day = int.Parse(Console.ReadLine()!);
-const int day = 3;
+const int day = 4;
 using var file = File.OpenRead($"input/input{day}.txt");
 using var inputStream = new StreamReader(file);
 Console.SetIn(inputStream);
