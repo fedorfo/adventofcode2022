@@ -16,4 +16,6 @@ public abstract class PuzzleBase: IPuzzle
             result.Add(line);
         }
     }
+
+    public virtual string InputFileName => $"input{Day}.txt";
 }
