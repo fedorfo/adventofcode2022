@@ -1,32 +1,30 @@
 namespace adventofcode2022;
 
-public class Day1: IPuzzle
+public class Day1: PuzzleBase
 {
-    public void Solve()
+    public override void Solve()
     {
         var elves = ReadElves().OrderByDescending(x=>x).ToList();
         Console.WriteLine(elves[0]);
         Console.WriteLine(elves[0] + elves[1] + elves[2]);
     }
-
-    private static List<int> ReadElves()
+    
+    private List<int> ReadElves()
     {
         var elves = new List<int>();
         var current = 0;
-        while (true)
+        foreach (var line in ReadLines().Concat(new[]{""}).ToList())
         {
-            var line = Console.ReadLine();
-            if (line is null || string.IsNullOrEmpty(line))
+            if (string.IsNullOrEmpty(line))
             {
                 elves.Add(current);
                 current = 0;
-                if (line is null)
-                    return elves;
             }
             else
             {
                 current += int.Parse(line);
             }
         }
+        return elves;
     }
 }

@@ -1,14 +1,14 @@
 namespace adventofcode2022;
 
-public class Day2 : IPuzzle
+public class Day2 : PuzzleBase
 {
-    public void Solve()
+    public override void Solve()
     {
-        var lines = GetLines();
+        var lines = ReadLines();
         Console.WriteLine(GetScore(lines));
         Console.WriteLine(GetScore2(lines));
     }
-    
+
     private enum Shape{
         Rock,
         Paper,
@@ -72,18 +72,6 @@ public class Day2 : IPuzzle
         throw new ArgumentException(encodedShape);
     }
     
-    private static List<string> GetLines()
-    {
-        var result = new List<string>();
-        while (true)
-        {
-            var line = Console.ReadLine();
-            if (line is null)
-                return result;
-            result.Add(line);
-        }
-    }
-
     private static int GetScore(List<string> lines)
     {
         var score = 0;

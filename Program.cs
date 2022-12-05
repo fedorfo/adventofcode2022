@@ -1,13 +1,20 @@
 ﻿using adventofcode2022;
 
-const int day = 2;
-var puzzles = new Dictionary<int, IPuzzle>
+var puzzles = new Dictionary<int, IPuzzle>();
+var puzzleTypes = typeof(Program).Assembly.DefinedTypes.Where(
+    x => x.ImplementedInterfaces.Contains(typeof(IPuzzle)) && !x.IsAbstract
+);
+foreach (var puzzleTypeInfo in puzzleTypes)
 {
-    {1, new Day1()},
-    {2, new Day2()},
-};
+    var constructor = puzzleTypeInfo.GetConstructor(Array.Empty<Type>());
+    var puzzle = (IPuzzle)constructor!.Invoke(Array.Empty<object>());
+    puzzles.Add(puzzle.Day, puzzle);
+}
 
+
+//var day = int.Parse(Console.ReadLine()!);
+const int day = 1;
 using var file = File.OpenRead($"input/input{day}.txt");
 using var inputStream = new StreamReader(file);
-    Console.SetIn(inputStream);
+Console.SetIn(inputStream);
 puzzles[day].Solve();
