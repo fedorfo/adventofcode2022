@@ -52,6 +52,4 @@ public class Day10 : PuzzleBase
                 Console.WriteLine();
         }
     }
-
-    //public override string InputFileName => "sample.txt";
 }
