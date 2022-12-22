@@ -5,7 +5,7 @@ namespace adventofcode2022;
 
 public class Day15 : PuzzleBase
 {
-    private static readonly Regex LineRegex = new Regex(
+    private static readonly Regex LineRegex = new(
         @"Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)",
         RegexOptions.Compiled
     );
@@ -88,6 +88,4 @@ public class Day15 : PuzzleBase
 
         return (sensors, beacons);
     }
-
-    //public override string InputFileName => "sample.txt";
 }
