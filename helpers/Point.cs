@@ -37,6 +37,11 @@ public class Point
     {
         return (int)(Math.Sqrt(X * X + Y * Y) + 1e-9);
     }
+    
+    public int ManhattanLength()
+    {
+        return Math.Abs(X)+Math.Abs(Y);
+    }
 
     public override string ToString()
     {
