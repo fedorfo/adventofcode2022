@@ -4,7 +4,7 @@ namespace adventofcode2022;
 
 public class Day14 : PuzzleBase
 {
-    private List<List<Point>> ReadChains()
+    private List<List<V2>> ReadChains()
     {
         var lines = ReadLines();
         return lines.Select(line => line.Split(' ', '-', '>')
@@ -12,15 +12,15 @@ public class Day14 : PuzzleBase
             .Select(x =>
             {
                 var pair = x.Split(",");
-                return new Point(int.Parse(pair[0]), int.Parse(pair[1]));
+                return new V2(int.Parse(pair[0]), int.Parse(pair[1]));
             })
             .ToList()
         ).ToList();
     }
 
-    private int Solve1(List<List<Point>> chains)
+    private int Solve1(List<List<V2>> chains)
     {
-        var field = new Dictionary<Point, bool>();
+        var field = new Dictionary<V2, bool>();
         FillField(chains, field);
 
         var maxy = chains.SelectMany(x => x).Select(x => x.Y).Max();
@@ -31,14 +31,14 @@ public class Day14 : PuzzleBase
         return result;
     }
 
-    private int Solve2(List<List<Point>> chains)
+    private int Solve2(List<List<V2>> chains)
     {
-        var field = new Dictionary<Point, bool>();
+        var field = new Dictionary<V2, bool>();
         FillField(chains, field);
 
         var maxy = chains.SelectMany(x => x).Select(x => x.Y).Max();
         for (var i = 500 - maxy - 10; i <= 500 + maxy + 10; i++)
-            field[new Point(i, maxy + 2)] = true;
+            field[new V2(i, maxy + 2)] = true;
 
         var result = 0;
         while (DropSandUnit(field, maxy + 2))
@@ -47,7 +47,7 @@ public class Day14 : PuzzleBase
         return result;
     }
 
-    private static void FillField(List<List<Point>> chains, Dictionary<Point, bool> field)
+    private static void FillField(List<List<V2>> chains, Dictionary<V2, bool> field)
     {
         foreach (var chain in chains)
         {
@@ -60,20 +60,20 @@ public class Day14 : PuzzleBase
                     if (start == end)
                         break;
                     var v = end - start;
-                    v /= v.IntLength();
+                    v /= v.ManhattanLength();
                     start += v;
                 }
             }
         }
     }
 
-    private bool DropSandUnit(Dictionary<Point, bool> field, int maxy)
+    private bool DropSandUnit(Dictionary<V2, bool> field, int maxy)
     {
-        var sandUnit = new Point(500, 0);
+        var sandUnit = new V2(500, 0);
         if (field.ContainsKey(sandUnit))
             return false;
 
-        var directions = new List<Point> { new(0, 1), new(-1, 1), new(1, 1) };
+        var directions = new List<V2> { new(0, 1), new(-1, 1), new(1, 1) };
         while (true)
         {
             var moved = false;

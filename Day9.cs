@@ -6,21 +6,21 @@ public class Day9 : PuzzleBase
 {
     class Rope
     {
-        private readonly Point[] knots;
+        private readonly V2[] knots;
 
-        public Rope(IReadOnlyCollection<Point> knots)
+        public Rope(IReadOnlyCollection<V2> knots)
         {
             this.knots = knots.ToArray();
         }
 
         public Rope Move(string direction)
         {
-            var shift = new Dictionary<string, Point>
+            var shift = new Dictionary<string, V2>
             {
-                { "D", new Point(0, 1) },
-                { "R", new Point(1, 0) },
-                { "L", new Point(-1, 0) },
-                { "U", new Point(0, -1) }
+                { "D", new V2(0, 1) },
+                { "R", new V2(1, 0) },
+                { "L", new V2(-1, 0) },
+                { "U", new V2(0, -1) }
             }[direction];
             var result = knots.ToList();
             result[0] = knots[0] + shift;
@@ -34,15 +34,15 @@ public class Day9 : PuzzleBase
             return new Rope(result);
         }
 
-        private static Point NormalizeTail(Point head, Point tail)
+        private static V2 NormalizeTail(V2 head, V2 tail)
         {
             var v = tail - head;
             if (Math.Abs(v.X) == 2 && Math.Abs(v.Y) == 2)
-                return new Point(head.X + v.X / 2, head.Y + v.Y / 2);
+                return new V2(head.X + v.X / 2, head.Y + v.Y / 2);
             if (Math.Abs(v.X) == 2)
-                return new Point(head.X + v.X / 2, head.Y);
+                return new V2(head.X + v.X / 2, head.Y);
             if (Math.Abs(v.Y) == 2)
-                return new Point(head.X, head.Y + v.Y / 2);
+                return new V2(head.X, head.Y + v.Y / 2);
             return tail;
         }
 
@@ -53,7 +53,7 @@ public class Day9 : PuzzleBase
 
         public void Print()
         {
-            var points = knots.Concat(new[] { new Point(0, 0) }).ToList();
+            var points = knots.Concat(new[] { new V2(0, 0) }).ToList();
 
             var xshift = -points.Select(x => x.X).Min();
             var yshift = -points.Select(x => x.Y).Min();
@@ -78,8 +78,8 @@ public class Day9 : PuzzleBase
         }
 
 
-        public Point Head => knots[0];
-        public Point Tail => knots[^1];
+        public V2 Head => knots[0];
+        public V2 Tail => knots[^1];
     }
 
     public override void Solve()
@@ -91,8 +91,8 @@ public class Day9 : PuzzleBase
 
     private static int Solve(IReadOnlyList<string> lines, int ropeLength)
     {
-        var rope = new Rope(Enumerable.Range(0, ropeLength).Select(_ => new Point(0, 0)).ToArray());
-        var visited = new HashSet<Point> { rope.Tail };
+        var rope = new Rope(Enumerable.Range(0, ropeLength).Select(_ => new V2(0, 0)).ToArray());
+        var visited = new HashSet<V2> { rope.Tail };
         foreach (var line in lines)
         {
             var args = line.Split(" ");

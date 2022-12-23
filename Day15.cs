@@ -27,7 +27,7 @@ public class Day15 : PuzzleBase
         }
     }
 
-    private List<(int l, int r)> GetSegments(List<Point> sensors, List<Point> beacons, int y)
+    private List<(int l, int r)> GetSegments(List<V2> sensors, List<V2> beacons, int y)
     {
         var segments = new List<(int l, int r)>();
         for (var i = 0; i < sensors.Count; i++)
@@ -56,34 +56,34 @@ public class Day15 : PuzzleBase
         return result;
     }
 
-    private int CountPlacesWithoutBeacon(List<Point> sensors, List<Point>  beacons, int y)
+    private int CountPlacesWithoutBeacon(List<V2> sensors, List<V2>  beacons, int y)
     {
         var segments = GetSegments(sensors, beacons, y);
         var beaconsCount = beacons.Where(x=>x.Y == y).ToHashSet().Count;
         return segments.Select(x=>x.r-x.l+1).Sum() - beaconsCount;
     }
 
-    private Point? FindPotentialBeacon(List<Point> sensors, List<Point>  beacons, int y, int rangeFrom, int rangeTo)
+    private V2? FindPotentialBeacon(List<V2> sensors, List<V2>  beacons, int y, int rangeFrom, int rangeTo)
     {
         var segments = GetSegments(sensors, beacons, y);
         if (segments.First().l > rangeFrom)
-            return new Point(0, y);
+            return new V2(0, y);
         if (segments.Last().r < rangeTo)
-            return new Point(rangeTo, y);
+            return new V2(rangeTo, y);
         if (segments.Count > 1)
-            return new Point(segments.First().r + 1, y);
+            return new V2(segments.First().r + 1, y);
         return null;
     }
 
-    private static (List<Point> sensors, List<Point> beacons) ReadSensorsAndBeacons(List<string> lines)
+    private static (List<V2> sensors, List<V2> beacons) ReadSensorsAndBeacons(List<string> lines)
     {
-        var sensors = new List<Point>();
-        var beacons = new List<Point>();
+        var sensors = new List<V2>();
+        var beacons = new List<V2>();
         foreach (var line in lines)
         {
             var match = LineRegex.Match(line);
-            sensors.Add(new Point(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value)));
-            beacons.Add(new Point(int.Parse(match.Groups[3].Value), int.Parse(match.Groups[4].Value)));
+            sensors.Add(new V2(int.Parse(match.Groups[1].Value), int.Parse(match.Groups[2].Value)));
+            beacons.Add(new V2(int.Parse(match.Groups[3].Value), int.Parse(match.Groups[4].Value)));
         }
 
         return (sensors, beacons);
