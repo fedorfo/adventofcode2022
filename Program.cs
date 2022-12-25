@@ -1,4 +1,5 @@
 ﻿using adventofcode2022;
+using adventofcode2022.helpers;
 
 var puzzles = new Dictionary<int, IPuzzle>();
 var puzzleTypes = typeof(Program).Assembly.DefinedTypes.Where(
@@ -13,7 +14,7 @@ foreach (var puzzleTypeInfo in puzzleTypes)
 
 
 //var day = int.Parse(Console.ReadLine()!);
-const int day = 19;
+var day = Helpers.Max(puzzles.Keys.ToArray());
 using var file = File.OpenRead($"input/{puzzles[day].InputFileName}");
 using var inputStream = new StreamReader(file);
 Console.SetIn(inputStream);
