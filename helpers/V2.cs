@@ -18,4 +18,14 @@ public record V2(int X, int Y)
                 yield return this + candidate;
         }
     }
+    public IEnumerable<V2> GetNeighbours4()
+    {
+        for (var x = -1; x <= 1; x++)
+        for (var y = -1; y <= 1; y++)
+        {
+            var candidate = new V2(x,y);
+            if (candidate.ManhattanLength() == 1)
+                yield return this + candidate;
+        }
+    }
 }

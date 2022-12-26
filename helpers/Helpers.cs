@@ -4,6 +4,14 @@ public static class Helpers
 {
     public static int Max(params int[] values) => values.Max();
 
+    public static int Mod(int a, int b)
+    {
+        var result = a % b;
+        if (result < 0)
+            result += b;
+        return result;
+    }
+
     public static void Measure(Action acc)
     {
         var now = DateTime.UtcNow;
