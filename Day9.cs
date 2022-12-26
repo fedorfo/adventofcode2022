@@ -1,10 +1,36 @@
 using adventofcode2022.helpers;
+using static System.Linq.Enumerable;
 
 namespace adventofcode2022;
 
 public class Day9 : PuzzleBase
 {
-    class Rope
+    public override void Solve()
+    {
+        var lines = ReadLines();
+        Console.WriteLine(Solve(lines, 2));
+        Console.WriteLine(Solve(lines, 10));
+    }
+
+    private static int Solve(IReadOnlyList<string> lines, int ropeLength)
+    {
+        var rope = new Rope(Range(0, ropeLength).Select(_ => new V2(0, 0)).ToArray());
+        var visited = new HashSet<V2> { rope.Tail };
+        foreach (var line in lines)
+        {
+            var args = line.Split(" ");
+            var (direction, count) = (args[0], int.Parse(args[1]));
+            for (var i = 0; i < count; i++)
+            {
+                rope = rope.Move(direction);
+                visited.Add(rope.Tail);
+            }
+        }
+
+        return visited.Count;
+    }
+
+    private class Rope
     {
         private readonly V2[] knots;
 
@@ -12,6 +38,10 @@ public class Day9 : PuzzleBase
         {
             this.knots = knots.ToArray();
         }
+
+
+        public V2 Head => knots[0];
+        public V2 Tail => knots[^1];
 
         public Rope Move(string direction)
         {
@@ -60,7 +90,7 @@ public class Day9 : PuzzleBase
             var xsize = Math.Max(points.Select(x => x.X).Max(), 0) + xshift + 1;
             var ysize = Math.Max(points.Select(x => x.Y).Max(), 0) + yshift + 1;
 
-            var result = Enumerable.Range(0, xsize).Select(_ => Enumerable.Range(0, ysize).Select(_ => ".").ToList())
+            var result = Range(0, xsize).Select(_ => Range(0, ysize).Select(_ => ".").ToList())
                 .ToList();
             for (var i = knots.Length - 1; i >= 0; i--)
                 result[knots[i].X + xshift][knots[i].Y + yshift] = i > 0 ? i.ToString() : "H";
@@ -76,34 +106,5 @@ public class Day9 : PuzzleBase
                 Console.WriteLine();
             }
         }
-
-
-        public V2 Head => knots[0];
-        public V2 Tail => knots[^1];
-    }
-
-    public override void Solve()
-    {
-        var lines = ReadLines();
-        Console.WriteLine(Solve(lines, 2));
-        Console.WriteLine(Solve(lines, 10));
-    }
-
-    private static int Solve(IReadOnlyList<string> lines, int ropeLength)
-    {
-        var rope = new Rope(Enumerable.Range(0, ropeLength).Select(_ => new V2(0, 0)).ToArray());
-        var visited = new HashSet<V2> { rope.Tail };
-        foreach (var line in lines)
-        {
-            var args = line.Split(" ");
-            var (direction, count) = (args[0], int.Parse(args[1]));
-            for (var i = 0; i < count; i++)
-            {
-                rope = rope.Move(direction);
-                visited.Add(rope.Tail);
-            }
-        }
-
-        return visited.Count;
     }
 }

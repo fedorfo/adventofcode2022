@@ -1,3 +1,5 @@
+using static System.Linq.Enumerable;
+
 namespace adventofcode2022;
 
 public class Day12 : PuzzleBase
@@ -47,7 +49,7 @@ public class Day12 : PuzzleBase
         var h = field.Count;
         var w = field[0].Count;
         var q = new Queue<(int, int)>();
-        var d = Enumerable.Range(0, h).Select(_ => Enumerable.Range(0, w).Select(_ => int.MaxValue).ToList()).ToList();
+        var d = Range(0, h).Select(_ => Range(0, w).Select(_ => int.MaxValue).ToList()).ToList();
         d[start.Item1][start.Item2] = 0;
         q.Enqueue(start);
         while (q.Count > 0)

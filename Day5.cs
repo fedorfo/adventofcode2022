@@ -1,23 +1,10 @@
 using System.Text.RegularExpressions;
+using static System.Linq.Enumerable;
 
 namespace adventofcode2022;
 
 public class Day5 : PuzzleBase
 {
-    class Movement
-    {
-        public Movement(int count, int from, int to)
-        {
-            Count = count;
-            From = from;
-            To = to;
-        }
-
-        public int Count { get; }
-        public int From { get; }
-        public int To { get; }
-    }
-
     public override void Solve()
     {
         var (stacks, movements) = ReadInput();
@@ -41,7 +28,7 @@ public class Day5 : PuzzleBase
             Move(stacks[movement.From], stacks[movement.To], movement.Count);
         Console.WriteLine(stacks.Select(x => x.Peek()).Aggregate("", (res, crate) => res + crate));
     }
-    
+
     private void Solve2(List<Stack<char>> stacks, IReadOnlyCollection<Movement> movements)
     {
         foreach (var movement in movements)
@@ -54,7 +41,7 @@ public class Day5 : PuzzleBase
         for (var i = 0; i < count; i++)
             to.Push(from.Pop());
     }
-    
+
     private void MoveSameOrdering(Stack<char> from, Stack<char> to, int count)
     {
         var buffer = new Stack<char>();
@@ -67,17 +54,15 @@ public class Day5 : PuzzleBase
     private (List<Stack<char>>, List<Movement>) ReadInput()
     {
         var lines = ReadLines();
-        var stacks = Enumerable.Range(0, lines[0].Length / 4 + 1).Select(_ => new Stack<char>()).ToList();
+        var stacks = Range(0, lines[0].Length / 4 + 1).Select(_ => new Stack<char>()).ToList();
 
         var stacksInputEnd = lines.Select((x, i) => Tuple.Create(x == "", i)).First(x => x.Item1).Item2 - 1;
         for (var i = stacksInputEnd - 1; i >= 0; i--)
         {
             var line = lines[i];
             for (var j = 0; j < stacks.Count; j++)
-            {
                 if (line[j * 4 + 1] != ' ')
                     stacks[j].Push(line[j * 4 + 1]);
-            }
         }
 
         var regex = new Regex(@"move (\d+) from (\d+) to (\d+)", RegexOptions.Compiled);
@@ -91,5 +76,19 @@ public class Day5 : PuzzleBase
         }
 
         return (stacks, movements);
+    }
+
+    private class Movement
+    {
+        public Movement(int count, int from, int to)
+        {
+            Count = count;
+            From = from;
+            To = to;
+        }
+
+        public int Count { get; }
+        public int From { get; }
+        public int To { get; }
     }
 }

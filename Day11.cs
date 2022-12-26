@@ -1,3 +1,4 @@
+using static System.Linq.Enumerable;
 namespace adventofcode2022;
 
 public class Day11 : PuzzleBase
@@ -12,7 +13,7 @@ public class Day11 : PuzzleBase
     private long Solve(List<string> lines, long relief, int rounds)
     {
         var (operations, tests, items) = ReadMoneys(lines);
-        var inspections = Enumerable.Range(0, items.Count).Select(_ => (long)0).ToList();
+        var inspections = Range(0, items.Count).Select(_ => (long)0).ToList();
 
         for (var round = 1; round <= rounds; round++)
         {

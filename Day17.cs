@@ -1,3 +1,5 @@
+using static System.Linq.Enumerable;
+
 namespace adventofcode2022;
 
 public class Day17 : PuzzleBase
@@ -154,7 +156,7 @@ public class Day17 : PuzzleBase
             for (var i = 0; i < rockLines.Count; i++)
                 lines[i + h] = string.Join(
                     "",
-                    Enumerable.Range(0, 7).Select(j => rockLines[i][j] == '#' ? '#' : lines[i + h][j]).ToList()
+                    Range(0, 7).Select(j => rockLines[i][j] == '#' ? '#' : lines[i + h][j]).ToList()
                 );
         }
 
